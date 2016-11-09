@@ -40,10 +40,6 @@ RUN chmod +x /bin/start-*.sh \
 
   && rm apache-activemq-$ACTIVEMQ_VERSION-bin.tar
 
-# Add user app
-RUN echo "app:x:999:999::/opt/app:/bin/false" >> /etc/passwd; \
-  echo "app:x:999:" >> /etc/group; \
-  mkdir -p /opt/app; chown app:app /opt/app
 
 EXPOSE 61612 61613 61616 8161 8162
 

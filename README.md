@@ -1,5 +1,5 @@
 # Docker image containing ActiveMQ
-Basic Docker image to run activemq as user app (999:999)
+Basic Docker image to run activemq as user app (499:499)
 
 You need edit (add) this env:
 
