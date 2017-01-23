@@ -1,12 +1,12 @@
-FROM oberthur/docker-ubuntu-java:jdk8_8.112.15
+FROM oberthur/docker-ubuntu-java:jdk8_8.121.13
 
 MAINTAINER Dawid Malinowski <d.malinowski@oberthur.com>
 
 ENV HOME=/opt/app
-ENV ACTIVEMQ_VERSION 5.14.1
+ENV ACTIVEMQ_VERSION 5.14.3
 WORKDIR /opt/app
 
-ADD start-activemq.sh /bin/start-activemq.sh
+COPY start-activemq.sh /bin/start-activemq.sh
 
 # Install activemq
 RUN chmod +x /bin/start-*.sh \
