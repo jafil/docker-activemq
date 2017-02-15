@@ -1,6 +1,8 @@
 #!/bin/bash
 
-RESPONSE=$(curl -d "body=message" http://admin:admin123@localhost:8161/api/message/TEST?type=queue)
+ADMIN_PASSWORD=${ADMIN_PASSWORD:=admin123}
+
+RESPONSE=$(curl -d "body=message" http://admin:${ADMIN_PASSWORD}@localhost:8161/api/message/TEST?type=queue)
 HEALTHY='Message sent'
 
 if [ "$RESPONSE" == "$HEALTHY" ]
