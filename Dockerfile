@@ -7,9 +7,11 @@ ENV ACTIVEMQ_VERSION 5.14.3
 WORKDIR /opt/app
 
 COPY start-activemq.sh /bin/start-activemq.sh
+COPY monitor.sh /bin/monitor.sh
 
 # Install activemq
 RUN chmod +x /bin/start-*.sh \
+  && chmod +x /bin/monitor.sh \
   && curl -LO https://www.apache.org/dist/activemq/${ACTIVEMQ_VERSION}/apache-activemq-${ACTIVEMQ_VERSION}-bin.tar.gz \
   && gunzip apache-activemq-${ACTIVEMQ_VERSION}-bin.tar.gz \
   && tar -xf apache-activemq-${ACTIVEMQ_VERSION}-bin.tar -C /opt/app \
