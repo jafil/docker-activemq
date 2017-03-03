@@ -36,8 +36,9 @@ You need edit (add) this env:
 
 *Jmx:*
 - **USE_JMX** - enable jmx (default value: `false`)
-- **USE_JMX_PORT** - enable jmx port (default value: `1616`)
-- **USE_JMX_SSL** - enable jmx port (default value: `false`)
+- **USE_JMX_HOSTNAME** - change jmx hostname (default value: `localhost`)
+- **USE_JMX_PORT** - change jmx port (default value: `1616`)
+- **USE_JMX_SSL** - enable jmx ssl (default value: `false`)
 - **BROKER_NAME** - change broker name (default value: `localhost`)
 
 If you want web console you should expose:

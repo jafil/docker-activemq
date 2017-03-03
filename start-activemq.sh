@@ -154,9 +154,10 @@ USE_JMX=${USE_JMX:="false"}
 BROKER_NAME=${BROKER_NAME:="localhost"}
 USE_JMX_PORT=${USE_JMX_PORT:="1616"}
 USE_JMX_SSL=${USE_JMX:="false"}
+USE_JMX_HOSTNAME=${USE_JMX_HOSTNAME:="localhost"}
 
 if [ "$USE_JMX_SSL" == "true" ] ; then
-  JMX_OPTS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=${USE_JMX_PORT} -Dcom.sun.management.jmxremote.ssl=${USE_JMX_SSL} -Dcom.sun.management.jmxremote.password.file=${HOME}/apache-activemq/conf/jmx.password -Dcom.sun.management.jmxremote.access.file=${HOME}/apache-activemq/conf/jmx.access"
+  JMX_OPTS="-Dcom.sun.management.jmxremote -Djava.rmi.server.hostname=${USE_JMX_HOSTNAME} -Dcom.sun.management.jmxremote.port=${USE_JMX_PORT} -Dcom.sun.management.jmxremote.ssl=${USE_JMX_SSL} -Dcom.sun.management.jmxremote.password.file=${HOME}/apache-activemq/conf/jmx.password -Dcom.sun.management.jmxremote.access.file=${HOME}/apache-activemq/conf/jmx.access"
 fi
 
 chmod 600 /opt/app/apache-activemq/conf/jmx.password
