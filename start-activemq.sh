@@ -156,7 +156,7 @@ USE_JMX_PORT=${USE_JMX_PORT:="1616"}
 USE_JMX_SSL=${USE_JMX:="false"}
 
 if [ "$USE_JMX_SSL" == "true" ] ; then
-  JMX_OPTS="-Dcom.sun.management.jmxremote.port=${USE_JMX_PORT} -Dcom.sun.management.jmxremote.ssl=${USE_JMX_SSL} -Dcom.sun.management.jmxremote.password.file=${HOME}/conf/jmx.password -Dcom.sun.management.jmxremote.access.file=${HOME}/conf/jmx.access"
+  JMX_OPTS="-Dcom.sun.management.jmxremote.port=${USE_JMX_PORT} -Dcom.sun.management.jmxremote.ssl=${USE_JMX_SSL} -Dcom.sun.management.jmxremote.password.file=${HOME}/apache-activemq/conf/jmx.password -Dcom.sun.management.jmxremote.access.file=${HOME}/apache-activemq/conf/jmx.access"
 fi
 
 sed -i -e "s/brokerName=\"localhost\"/useJmx=\"${USE_JMX}\" brokerName=\"${BROKER_NAME}\"/" /opt/app/apache-activemq/conf/activemq.xml
