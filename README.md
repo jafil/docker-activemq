@@ -34,6 +34,12 @@ You need edit (add) this env:
 - **CAMEL_LOGGER_LEVEL** - changes `log4j.logger.org.apache.camel` (default value: `INFO`)
 - **CONSOLE_APPENDER_THRESHOLD_LEVEL** - changes `log4j.appender.console.threshold` (default value: `INFO`)
 
+*Jmx:*
+- **USE_JMX** - enable jmx (default value: `false`)
+- **USE_JMX_PORT** - change jmx port (default value: `1616`)
+- **USE_JMX_SSL** - enable jmx ssl (default value: `false`)
+- **BROKER_NAME** - change broker name (default value: `localhost`)
+
 If you want web console you should expose:
 - **8161**: if you need plain http connection
 - **8162**: if you need ssl connection

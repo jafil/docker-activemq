@@ -150,6 +150,19 @@ sed -i -e "s/admin activemq/admin ${ADMIN_PASSWORD}/" /opt/app/apache-activemq/c
 sed -i -e "s/admin: admin, admin/admin: ${ADMIN_PASSWORD}, admin/" /opt/app/apache-activemq/conf/jetty-realm.properties
 sed -i -e 's/user: user, user//' /opt/app/apache-activemq/conf/jetty-realm.properties
 
+# Enable jmx
+USE_JMX=${USE_JMX:="false"}
+BROKER_NAME=${BROKER_NAME:="localhost"}
+USE_JMX_PORT=${USE_JMX_PORT:="1616"}
+USE_JMX_SSL=${USE_JMX:="false"}
+
+if [ "$USE_JMX_SSL" == "true" ] ; then
+  JMX_OPTS="-Dcom.sun.management.jmxremote.port=${USE_JMX_PORT} -Dcom.sun.management.jmxremote.ssl=${USE_JMX_SSL} -Dcom.sun.management.jmxremote.password.file=${HOME}/apache-activemq/conf/jmx.password -Dcom.sun.management.jmxremote.access.file=${HOME}/apache-activemq/conf/jmx.access"
+fi
+
+chmod 600 /opt/app/apache-activemq/conf/jmx.password
+sed -i -e "s/brokerName=\"localhost\"/useJmx=\"${USE_JMX}\" brokerName=\"${BROKER_NAME}\"/" /opt/app/apache-activemq/conf/activemq.xml
+
 JVM_OPTS="-server -verbose:gc -XX:+UseCompressedOops -Xms512m -Xmx512m -XX:MetaspaceSize=64M -XX:MaxMetaspaceSize=64M"
 
-exec java ${JVM_OPTS} -Djava.util.logging.config.file=logging.properties -jar /opt/app/apache-activemq/bin/activemq.jar start
+exec java ${JVM_OPTS} ${JMX_OPTS} -Djava.util.logging.config.file=logging.properties -jar /opt/app/apache-activemq/bin/activemq.jar start
