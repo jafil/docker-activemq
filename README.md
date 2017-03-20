@@ -8,7 +8,7 @@ You need edit (add) this env:
 - **STORE_USAGE**: value in GB (default value is `10`)
 - **TEMP_USAGE**: value in GB (default value is `5`)
 - **ADMIN_PASSWORD**: provide admin password (default `admin123`)
-
+- **KEYSTORE_LOCATION**: location of keystore (default `\/opt\/app\/broker.ks`) - remember to escape special chars
 *Networking*
 
 - **ACTIVE_MQ_TRANSPORT_CONNECTOR_NAMES**: available values **OPENWIRE,AMQP,MQTT,STOMP,STOMPSSL,WS,SSL**

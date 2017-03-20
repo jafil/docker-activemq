@@ -3,9 +3,9 @@ set -e
 set -x
 
 #check if connector types are set
-if [ -z ${ACTIVE_MQ_TRANSPORT_CONNECTOR_NAMES} ]; 
+if [ -z ${ACTIVE_MQ_TRANSPORT_CONNECTOR_NAMES} ];
    then echo "Configuration error: 'ACTIVE_MQ_TRANSPORT_CONNECTOR_NAMES' env variable is not set";
-   exit 0  
+   exit 0
 fi
 
 STORE_USAGE=${STORE_USAGE:=10}
@@ -18,6 +18,7 @@ ACTIVEMQ_WEB_HANDLER_LOGGER_LEVEL=${ACTIVEMQ_WEB_HANDLER_LOGGER_LEVEL:="WARN"}
 SPRINGFRAMEWORK_LOGGER_LEVEL=${SPRINGFRAMEWORK_LOGGER_LEVEL:="WARN"}
 CAMEL_LOGGER_LEVEL=${CAMEL_LOGGER_LEVEL:="INFO"}
 CONSOLE_APPENDER_THRESHOLD_LEVEL=${CONSOLE_APPENDER_THRESHOLD_LEVEL:="INFO"}
+KEYSTORE_LOCATION=${KEYSTORE_LOCATION:="\/opt\/app\/broker.ks"}
 
 sed -i -e "s/<storeUsage limit=\"100 gb\"\/>/<storeUsage limit=\"${STORE_USAGE} gb\"\/>/" /opt/app/apache-activemq/conf/activemq.xml
 sed -i -e "s/<tempUsage limit=\"50 gb\"\/>/<tempUsage limit=\"5 gb\"\/>/" /opt/app/apache-activemq/conf/activemq.xml
@@ -29,38 +30,38 @@ for CONNECTOR in "${ACTIVE_MQ_TRANSPORT_CONNECTOR_NAMES_ARRAY[@]}"
 do
 	#CHECK OPENWIRE
 	if [ "$CONNECTOR" == 'OPENWIRE' ] ; then
-		OPENWIRE_CONNECTOR='true'	
+		OPENWIRE_CONNECTOR='true'
 	fi
 
 
 	#CHECK AMQP
 	if [ "$CONNECTOR" == 'AMQP' ] ; then
-		AMQP_CONNECTOR='true'	
+		AMQP_CONNECTOR='true'
 	fi
 
 	#CHECK STOPMSSL
 	if [ "$CONNECTOR" == 'STOMPSSL' ] ; then
-		STOMPSSL_CONNECTOR='true'	
+		STOMPSSL_CONNECTOR='true'
 	fi
 
 	#CHECK STOMP
 	if [ "$CONNECTOR" == 'STOMP' ] ; then
-		STOMP_CONNECTOR='true'	
+		STOMP_CONNECTOR='true'
 	fi
 
 	#CHECK MQTT
 	if [ "$CONNECTOR" == 'MQTT' ] ; then
-		MQTT_CONNECTOR='true'	
+		MQTT_CONNECTOR='true'
 	fi
 
 	#CHECK WS
 	if [ "$CONNECTOR" == 'WS' ] ; then
-		WS_CONNECTOR='true'	
+		WS_CONNECTOR='true'
 	fi
 
 	#CHECK SSL
 	if [ "$CONNECTOR" == 'SSL' ] ; then
-		SSL_CONNECTOR='true'	
+		SSL_CONNECTOR='true'
 	fi
 done
 
@@ -83,7 +84,7 @@ fi
 
 if [ -n "$STOMPSSL_CONNECTOR" ] ; then
     PORT_STOMPSSL=${ACTIVE_MQ_TRANSPORT_CONNECTOR_STOMPSSL_PORT:=61612}
-    sed -i -e "s/<transportConnector name=\"stompssl\" uri=\"stomp+nio+ssl:\/\/0.0.0.0:61612?transport.enabledCipherSuites=SSL_RSA_WITH_RC4_128_SHA,SSL_DH_anon_WITH_3DES_EDE_CBC_SHA\" \/>/<transportConnector name=\"stompssl\" uri=\"stomp+nio+ssl:\/\/0.0.0.0:${PORT_STOMPSSL}\?transport.enabledCipherSuites=SSL_RSA_WITH_RC4_128_SHA,SSL_DH_anon_WITH_3DES_EDE_CBC_SHA\" \/>/g" /opt/app/apache-activemq/conf/activemq.xml 
+    sed -i -e "s/<transportConnector name=\"stompssl\" uri=\"stomp+nio+ssl:\/\/0.0.0.0:61612?transport.enabledCipherSuites=SSL_RSA_WITH_RC4_128_SHA,SSL_DH_anon_WITH_3DES_EDE_CBC_SHA\" \/>/<transportConnector name=\"stompssl\" uri=\"stomp+nio+ssl:\/\/0.0.0.0:${PORT_STOMPSSL}\?transport.enabledCipherSuites=SSL_RSA_WITH_RC4_128_SHA,SSL_DH_anon_WITH_3DES_EDE_CBC_SHA\" \/>/g" /opt/app/apache-activemq/conf/activemq.xml
     echo "STOMPSSL CONNECTOR SET"
 else
     sed -i -e "s/<transportConnector name=\"stompssl\" uri=\"stomp+nio+ssl:\/\/0.0.0.0:61612?transport.enabledCipherSuites=SSL_RSA_WITH_RC4_128_SHA,SSL_DH_anon_WITH_3DES_EDE_CBC_SHA\" \/>//g" /opt/app/apache-activemq/conf/activemq.xml
@@ -118,7 +119,7 @@ if [ -n "$SSL_CONNECTOR" ] ; then
     KEYSTOR_PASSWORD=${ACTIVE_MQ_TRANSPORT_CONNECTOR_SSL_KEYSTOREPASSWORD:=''}
     TRUSTSTORE_PASSWORD=${ACTIVE_MQ_TRANSPORT_CONNECTOR_SSL_TRUSTSTOREPASSWORD:=''}
     sed -i -e "s/<transportConnectors>/<transportConnectors>\n<transportConnector name=\"ssl\" uri=\"ssl:\/\/0.0.0.0:${PORT_SSL}?needClientAuth=true\"\/>\n/g" /opt/app/apache-activemq/conf/activemq.xml
-    sed -i -e "s/<transportConnectors>/<sslContext>\n<sslContext keyStore=\"file:\/opt\/app\/broker.ks\" keyStorePassword=\"${KEYSTOR_PASSWORD}\" trustStore=\"file:\/opt\/app\/broker.ts\" trustStorePassword=\"${TRUSTSTORE_PASSWORD}\"\/>\n<\/sslContext>\n\n<transportConnectors>/g" /opt/app/apache-activemq/conf/activemq.xml
+    sed -i -e "s/<transportConnectors>/<sslContext>\n<sslContext keyStore=\"file:${KEYSTORE_LOCATION}\" keyStorePassword=\"${KEYSTOR_PASSWORD}\" trustStore=\"file:${KEYSTORE_LOCATION}\" trustStorePassword=\"${TRUSTSTORE_PASSWORD}\"\/>\n<\/sslContext>\n\n<transportConnectors>/g" /opt/app/apache-activemq/conf/activemq.xml
     echo "SSL CONNECTOR SET"
 fi
 
@@ -165,4 +166,3 @@ sed -i -e "s/brokerName=\"localhost\"/useJmx=\"${USE_JMX}\" brokerName=\"${BROKE
 JVM_OPTS="-server -verbose:gc -XX:+UseCompressedOops -Xms512m -Xmx512m -XX:MetaspaceSize=64M -XX:MaxMetaspaceSize=64M"
 
 exec java ${JVM_OPTS} ${JMX_OPTS} -Djava.util.logging.config.file=logging.properties -jar /opt/app/apache-activemq/bin/activemq.jar start
-
