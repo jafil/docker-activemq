@@ -142,8 +142,22 @@ sed -i -e "s/log4j.logger.org.apache.camel=INFO/log4j.logger.org.apache.camel=${
 sed -i -e "s/log4j.appender.console.threshold=INFO/log4j.appender.console.threshold=${CONSOLE_APPENDER_THRESHOLD_LEVEL}/g" /opt/app/apache-activemq/conf/log4j.properties
 
 # Enabling Network Of Brokers
+if [[ (-v NETWORK_OF_BROKERS_CONNECTORS_URI ) || (-v NETWORK_OF_BROKERS_CONNECTORS_SEC_URI ) ]]; then
+  sed -i 's/.*<\/broker>/<networkConnectors>\n<\/networkConnectors>\n\n&/' /opt/app/apache-activemq/conf/activemq.xml
+fi
 if [[ -v NETWORK_OF_BROKERS_CONNECTORS_URI ]]; then
-  sed -i -e "s/<\/shutdownHooks>/<\/shutdownHooks>\\n<networkConnectors>\\n<networkConnector uri=\"${NETWORK_OF_BROKERS_CONNECTORS_URI}\"\/>\\n<\/networkConnectors>/g" /opt/app/apache-activemq/conf/activemq.xml
+  sed -i "s/<\/networkConnectors>/ <networkConnector uri=\"${NETWORK_OF_BROKERS_CONNECTORS_URI}\"\/>\n&/" /opt/app/apache-activemq/conf/activemq.xml
+
+  if [[ -v NETWORK_OF_BROKERS_CONNECTORS_NAME ]]; then
+    sed -i "s/uri=\"${NETWORK_OF_BROKERS_CONNECTORS_URI}\"\/>/name=\"${NETWORK_OF_BROKERS_CONNECTORS_NAME}\" &/" /opt/app/apache-activemq/conf/activemq.xml
+  fi
+fi
+if [[ -v NETWORK_OF_BROKERS_CONNECTORS_SEC_URI ]]; then
+  sed -i "s/<\/networkConnectors>/ <networkConnector uri=\"${NETWORK_OF_BROKERS_CONNECTORS_SEC_URI}\"\/>\n&/" /opt/app/apache-activemq/conf/activemq.xml
+
+  if [[ -v NETWORK_OF_BROKERS_CONNECTORS_SEC_NAME ]]; then
+    sed -i "s/uri=\"${NETWORK_OF_BROKERS_CONNECTORS_SEC_URI}\"\/>/name=\"${NETWORK_OF_BROKERS_CONNECTORS_SEC_NAME}\" &/" /opt/app/apache-activemq/conf/activemq.xml
+  fi
 fi
 
 sed -i -e "s/admin activemq/admin ${ADMIN_PASSWORD}/" /opt/app/apache-activemq/conf/jmx.password
