@@ -1,16 +1,17 @@
-FROM oberthur/docker-ubuntu-java:jdk8_8.121.13_V2
+FROM oberthur/docker-ubuntu-java:jdk8_full_8.131.11
 
 MAINTAINER Dawid Malinowski <d.malinowski@oberthur.com>
 
 ENV HOME=/opt/app
-ENV ACTIVEMQ_VERSION 5.14.4
+ENV ACTIVEMQ_VERSION 5.15.0
 WORKDIR /opt/app
 
 COPY start-activemq.sh /bin/start-activemq.sh
 COPY monitor.sh /bin/monitor.sh
 
 # Install activemq
-RUN chmod +x /bin/start-*.sh \
+RUN apt-get update && apt-get install curl \
+  && chmod +x /bin/start-*.sh \
   && chmod +x /bin/monitor.sh \
   && curl -LO https://www.apache.org/dist/activemq/${ACTIVEMQ_VERSION}/apache-activemq-${ACTIVEMQ_VERSION}-bin.tar.gz \
   && gunzip apache-activemq-${ACTIVEMQ_VERSION}-bin.tar.gz \
