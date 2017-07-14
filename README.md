@@ -21,7 +21,11 @@ You need edit (add) this env:
 - **ACTIVE_MQ_TRANSPORT_CONNECTOR_AMQP_PORT**: port for AMQP connector (default value 5672)
 - **ACTIVE_MQ_TRANSPORT_CONNECTOR_STOMP_PORT**: port for STOMP connector (default value 61613)
 - **ACTIVE_MQ_TRANSPORT_CONNECTOR_STOPMSSL_PORT** port for STOMPSSL connector (default value 61612)
-- **NETWORK_OF_BROKERS_CONNECTORS_URI**: possibility to configure network of brokers. As this env variable is part of `sed` command it needs to escape all special characters like in `sed` f.e.:
+- **NETWORK_OF_BROKERS_CONNECTORS_URI**: possibility to configure primary network of brokers connector 
+- **NETWORK_OF_BROKERS_CONNECTORS_NAME**: optional name for primary network connector
+- **NETWORK_OF_BROKERS_CONNECTORS_SEC_URI**: optional secondary network connector
+- **NETWORK_OF_BROKERS_CONNECTORS_SEC_NAME**: optional name for secondary network connector
+As these URI env variable are part of `sed` command it needs to escape all special characters like in `sed` f.e.:
 
 ```export NETWORK_OF_BROKERS_CONNECTORS_URI=static:(tcp:\/\/10.122.17.157:61616)```
 
