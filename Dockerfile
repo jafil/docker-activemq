@@ -1,9 +1,9 @@
-FROM oberthur/docker-ubuntu-java:jdk8_full_8.131.11
+FROM oberthur/docker-ubuntu-java:jdk8_8.121.13_V2
 
 MAINTAINER Dawid Malinowski <d.malinowski@oberthur.com>
 
 ENV HOME=/opt/app
-ENV ACTIVEMQ_VERSION 5.15.0
+ENV ACTIVEMQ_VERSION 5.14.4
 WORKDIR /opt/app
 
 COPY start-activemq.sh /bin/start-activemq.sh
