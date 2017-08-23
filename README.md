@@ -1,5 +1,5 @@
 # Docker image containing ActiveMQ
-Basic Docker image to run activemq as user app (499:499)
+Basic Docker image to run activemq as user app (999:999)
 
 You need edit (add) this env:
 
@@ -8,7 +8,8 @@ You need edit (add) this env:
 - **STORE_USAGE**: value in GB (default value is `10`)
 - **TEMP_USAGE**: value in GB (default value is `5`)
 - **ADMIN_PASSWORD**: provide admin password (default `admin123`)
-- **KEYSTORE_LOCATION**: location of keystore (default `\/opt\/app\/broker.ks`) - remember to escape special chars
+- **PERSISTENT_STORAGE**: use persistent storage based on KahaDB (default `false`)
+
 *Networking*
 
 - **ACTIVE_MQ_TRANSPORT_CONNECTOR_NAMES**: available values **OPENWIRE,AMQP,MQTT,STOMP,STOMPSSL,WS,SSL**
@@ -21,11 +22,7 @@ You need edit (add) this env:
 - **ACTIVE_MQ_TRANSPORT_CONNECTOR_AMQP_PORT**: port for AMQP connector (default value 5672)
 - **ACTIVE_MQ_TRANSPORT_CONNECTOR_STOMP_PORT**: port for STOMP connector (default value 61613)
 - **ACTIVE_MQ_TRANSPORT_CONNECTOR_STOPMSSL_PORT** port for STOMPSSL connector (default value 61612)
-- **NETWORK_OF_BROKERS_CONNECTORS_URI**: possibility to configure primary network of brokers connector 
-- **NETWORK_OF_BROKERS_CONNECTORS_NAME**: optional name for primary network connector
-- **NETWORK_OF_BROKERS_CONNECTORS_SEC_URI**: optional secondary network connector
-- **NETWORK_OF_BROKERS_CONNECTORS_SEC_NAME**: optional name for secondary network connector
-As these URI env variable are part of `sed` command it needs to escape all special characters like in `sed` f.e.:
+- **NETWORK_OF_BROKERS_CONNECTORS_URI**: possibility to configure network of brokers. As this env variable is part of `sed` command it needs to escape all special characters like in `sed` f.e.:
 
 ```export NETWORK_OF_BROKERS_CONNECTORS_URI=static:(tcp:\/\/10.122.17.157:61616)```
 
@@ -37,12 +34,6 @@ As these URI env variable are part of `sed` command it needs to escape all speci
 - **SPRINGFRAMEWORK_LOGGER_LEVEL** - changes `log4j.logger.org.springframework` (default value: `WARN`)
 - **CAMEL_LOGGER_LEVEL** - changes `log4j.logger.org.apache.camel` (default value: `INFO`)
 - **CONSOLE_APPENDER_THRESHOLD_LEVEL** - changes `log4j.appender.console.threshold` (default value: `INFO`)
-
-*Jmx:*
-- **USE_JMX** - enable jmx (default value: `false`)
-- **USE_JMX_PORT** - change jmx port (default value: `1616`)
-- **USE_JMX_SSL** - enable jmx ssl (default value: `false`)
-- **BROKER_NAME** - change broker name (default value: `localhost`)
 
 If you want web console you should expose:
 - **8161**: if you need plain http connection
