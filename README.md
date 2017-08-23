@@ -8,6 +8,7 @@ You need edit (add) this env:
 - **STORE_USAGE**: value in GB (default value is `10`)
 - **TEMP_USAGE**: value in GB (default value is `5`)
 - **ADMIN_PASSWORD**: provide admin password (default `admin123`)
+- **PERSISTENT_STORAGE**: decide if you want to KahaDB persistent storage (default value 'false')
 
 *Networking*
 
