@@ -9,6 +9,7 @@ You need edit (add) this env:
 - **TEMP_USAGE**: value in GB (default value is `5`)
 - **ADMIN_PASSWORD**: provide admin password (default `admin123`)
 - **KEYSTORE_LOCATION**: location of keystore (default `\/opt\/app\/broker.ks`) - remember to escape special chars
+- **PERSISTENT_STORAGE**: decide if you want to KahaDB persistent storage (default value 'false')
 *Networking*
 
 - **ACTIVE_MQ_TRANSPORT_CONNECTOR_NAMES**: available values **OPENWIRE,AMQP,MQTT,STOMP,STOMPSSL,WS,SSL**

@@ -19,9 +19,11 @@ SPRINGFRAMEWORK_LOGGER_LEVEL=${SPRINGFRAMEWORK_LOGGER_LEVEL:="WARN"}
 CAMEL_LOGGER_LEVEL=${CAMEL_LOGGER_LEVEL:="INFO"}
 CONSOLE_APPENDER_THRESHOLD_LEVEL=${CONSOLE_APPENDER_THRESHOLD_LEVEL:="INFO"}
 KEYSTORE_LOCATION=${KEYSTORE_LOCATION:="\/opt\/app\/broker.ks"}
+PERSISTENT_STORAGE=${PERSISTENT_STORAGE:=false}
 
 sed -i -e "s/<storeUsage limit=\"100 gb\"\/>/<storeUsage limit=\"${STORE_USAGE} gb\"\/>/" /opt/app/apache-activemq/conf/activemq.xml
 sed -i -e "s/<tempUsage limit=\"50 gb\"\/>/<tempUsage limit=\"5 gb\"\/>/" /opt/app/apache-activemq/conf/activemq.xml
+sed -i -e "s/broker /broker persistent=\"${PERSISTENT_STORAGE}\" /" /opt/app/apache-activemq/conf/activemq.xml
 
 #Checking transport connectors
 IFS=', ' read -r -a ACTIVE_MQ_TRANSPORT_CONNECTOR_NAMES_ARRAY <<< "${ACTIVE_MQ_TRANSPORT_CONNECTOR_NAMES}"
@@ -164,6 +166,6 @@ sed -i -e "s/admin activemq/admin ${ADMIN_PASSWORD}/" /opt/app/apache-activemq/c
 sed -i -e "s/admin: admin, admin/admin: ${ADMIN_PASSWORD}, admin/" /opt/app/apache-activemq/conf/jetty-realm.properties
 sed -i -e 's/user: user, user//' /opt/app/apache-activemq/conf/jetty-realm.properties
 
-JVM_OPTS="-server -verbose:gc -XX:+UseCompressedOops -Xms512m -Xmx512m -XX:MetaspaceSize=64M -XX:MaxMetaspaceSize=64M"
+JVM_OPTS="-server -verbose:gc -XX:+UseCompressedOops -Xms512m -Xmx512m -XX:MetaspaceSize=64M -XX:MaxMetaspaceSize=92M"
 
 exec java ${JVM_OPTS} -Djava.util.logging.config.file=logging.properties -jar /opt/app/apache-activemq/bin/activemq.jar start
