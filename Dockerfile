@@ -1,4 +1,4 @@
-FROM oberthur/docker-ubuntu-java:jdk8_8.121.13_V2
+FROM oberthur/docker-ubuntu-java:jdk8_8.112.15
 
 MAINTAINER Dawid Malinowski <d.malinowski@oberthur.com>
 
@@ -6,13 +6,10 @@ ENV HOME=/opt/app
 ENV ACTIVEMQ_VERSION 5.14.4
 WORKDIR /opt/app
 
-COPY start-activemq.sh /bin/start-activemq.sh
-COPY monitor.sh /bin/monitor.sh
+ADD start-activemq.sh /bin/start-activemq.sh
 
 # Install activemq
-RUN apt-get update && apt-get install curl \
-  && chmod +x /bin/start-*.sh \
-  && chmod +x /bin/monitor.sh \
+RUN chmod +x /bin/start-*.sh \
   && curl -LO https://www.apache.org/dist/activemq/${ACTIVEMQ_VERSION}/apache-activemq-${ACTIVEMQ_VERSION}-bin.tar.gz \
   && gunzip apache-activemq-${ACTIVEMQ_VERSION}-bin.tar.gz \
   && tar -xf apache-activemq-${ACTIVEMQ_VERSION}-bin.tar -C /opt/app \
@@ -43,6 +40,10 @@ RUN apt-get update && apt-get install curl \
 
   && rm apache-activemq-$ACTIVEMQ_VERSION-bin.tar
 
+# Add user app
+RUN echo "app:x:999:999::/opt/app:/bin/false" >> /etc/passwd; \
+  echo "app:x:999:" >> /etc/group; \
+  mkdir -p /opt/app; chown app:app /opt/app
 
 EXPOSE 61612 61613 61616 8161 8162
 
